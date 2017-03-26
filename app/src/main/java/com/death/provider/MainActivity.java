@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.death.provider.utils.SelectorAttributes;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Button search;
     EditText editText;
+    Document doc = null;
     AdapterProducts mAdapter;
     ArrayList<PaytmModel> paytmModels;
 
@@ -53,41 +56,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 paytmModels.clear();
-                String urlForStore = "https://paytm.com/shop/search?q=" + editText.getText().toString();
-
+                String urlForStore = SelectorAttributes.BASE_FLIPKART + editText.getText().toString();
                 Log.e("URL", urlForStore);
-                Document doc = null;
-                try {
-                    doc = Jsoup.connect(urlForStore).followRedirects(true).get();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                assert doc != null;
-                Log.e("SIZE", "" + doc.select("._2i1r").size());
-                if (doc.select("._2i1r").size() != 0) {
-                    viewScrapper(urlForStore);
-                } else {
-                    Toast.makeText(MainActivity.this, "INTO ELSE", Toast.LENGTH_LONG).show();
-                    WebView webView = (WebView) findViewById(R.id.webview);
-                    webView.loadUrl(urlForStore);
-                    webView.getSettings().setJavaScriptEnabled(true);
-                    webView.setWebViewClient(new WebViewClient() {
-                        @Override
-                        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                            return super.shouldOverrideUrlLoading(view, request);
-                        }
-                        @Override
-                        public void onPageCommitVisible(WebView view, String url) {
-                            super.onPageCommitVisible(view, url);
-                            count++;
-                            if (count % 2 == 0) {
-                                Log.e("URL", url);
-                                Log.e("CURL", view.getUrl());
-                                viewScrapper(view.getUrl());
-                            }
-                        }
-                    });
-                }
+                viewScrapper(urlForStore);
+//                Toast.makeText(MainActivity.this, "INTO ELSE", Toast.LENGTH_LONG).show();
+//                WebView webView = (WebView) findViewById(R.id.webview);
+//                webView.loadUrl(urlForStore);
+//                webView.getSettings().setJavaScriptEnabled(true);
+//                webView.setWebViewClient(new WebViewClient() {
+//                    @Override
+//                    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+//                        return super.shouldOverrideUrlLoading(view, request);
+//                    }
+//
+//                    @Override
+//                    public void onPageCommitVisible(WebView view, String url) {
+//                        super.onPageCommitVisible(view, url);
+//                        count++;
+//                        if (count % 2 == 0) {
+//                            Log.e("URL", url);
+//                            Log.e("CURL", view.getUrl());
+//                            viewScrapper(view.getUrl());
+//                        }
+//                    }
+//                });
+
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -95,24 +88,45 @@ public class MainActivity extends AppCompatActivity {
 
     public void viewScrapper(String url) {
         paytmModels.clear();
-        String redirectedUrl = url;
+//
+//        Log.e("URL", redirectedUrl);
+//        Document doc = null;
+//        try {
+//            doc = Jsoup.connect(redirectedUrl).followRedirects(true).get();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        assert doc != null;
+//        for (Element element : doc.select("._2i1r")) {
+//            PaytmModel model = new PaytmModel();
+//            model.setpName(element.select("._2apC").text());
+//            model.setpPrice(element.select("._1kMS").text());
+//            model.setpLink(element.select("a._8vVO").attr("abs:href"));
+//            model.setpImageLink(element.select("img").attr("abs:src"));
+//            paytmModels.add(model);
+//        }
 
-        Log.e("URL", redirectedUrl);
+        Log.e("URL", url);
         Document doc = null;
         try {
-            doc = Jsoup.connect(redirectedUrl).followRedirects(true).get();
+            doc = Jsoup.connect(url).followRedirects(true).get();
         } catch (IOException e) {
             e.printStackTrace();
         }
         assert doc != null;
-        for (Element element : doc.select("._2i1r")) {
-            PaytmModel model = new PaytmModel();
-            model.setpName(element.select("._2apC").text());
-            model.setpPrice(element.select("._1kMS").text());
-            model.setpLink(element.select("a._8vVO").attr("abs:href"));
-            model.setpImageLink(element.select("img").attr("abs:src"));
-            paytmModels.add(model);
+        for (Element element : doc.select("._2SxMvQ")) {
+//            PaytmModel model = new PaytmModel();
+//            model.setpName(element.select("._2apC").text());
+//            model.setpPrice(element.select("._1kMS").text());
+//            model.setpLink(element.select("a._8vVO").attr("abs:href"));
+//            model.setpImageLink(element.select("img").attr("abs:src"));
+//            paytmModels.add(model);
+//            Log.e("ELEMENTS",element.select("h2.a-size-base.a-color-null.s-inline.scx-truncate.s-access-title.a-text-normal").text());
+//            Log.e("IMAGE LINKS",element.select("img.s-access-image.cfMarker").attr("abs:src"));
+//            Log.e("PRICE",element.select("span.a-size-base.a-color-price.a-text-bold").text());
+//            Log.e("ITEM LINK",element.select("a.a-link-normal").attr("abs:href"));
+
+            Log.e("ELEMENT", element.toString());
         }
-        mAdapter.notifyDataSetChanged();
     }
 }
