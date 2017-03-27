@@ -4,12 +4,22 @@ package com.death.provider;
  * Created by rajora_sd on 3/24/2017.
  */
 
-public class PaytmModel {
+public class ItemModel {
 
     String pName;
     String pLink;
     String pImageLink;
     String pPrice;
+
+    public String getpStoreName() {
+        return pStoreName;
+    }
+
+    public void setpStoreName(String pStoreName) {
+        this.pStoreName = pStoreName;
+    }
+
+    String pStoreName;
 
     public String getpName() {
         return pName;

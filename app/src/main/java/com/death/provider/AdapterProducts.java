@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 /**
@@ -21,10 +23,10 @@ public class AdapterProducts extends RecyclerView.Adapter<AdapterProducts.MyView
 
 
     Context mContext;
-    private List<PaytmModel> paytmModels;
-    public AdapterProducts(Context context, List<PaytmModel> paytmModels) {
+    private List<ItemModel> itemModels;
+    public AdapterProducts(Context context, List<ItemModel> itemModels) {
         mContext = context;
-        this.paytmModels = paytmModels;
+        this.itemModels = itemModels;
     }
 
     @Override
@@ -36,10 +38,11 @@ public class AdapterProducts extends RecyclerView.Adapter<AdapterProducts.MyView
     }
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        PaytmModel paytmModel = paytmModels.get(position);
-        holder.pProductName.setText(paytmModel.getpName());
-        holder.pProductPrice.setText(paytmModel.getpPrice());
-        Glide.with(mContext).load(paytmModel.getpImageLink())
+        ItemModel itemModel = itemModels.get(position);
+        holder.pProductName.setText(itemModel.getpName());
+        holder.pProductPrice.setText(itemModel.getpPrice());
+        holder.sName.setText(itemModel.getpStoreName());
+        Glide.with(mContext).load(itemModel.getpImageLink())
                 .thumbnail(0.5f)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -48,7 +51,7 @@ public class AdapterProducts extends RecyclerView.Adapter<AdapterProducts.MyView
 
     @Override
     public int getItemCount() {
-        return paytmModels.size();
+        return itemModels.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -56,13 +59,13 @@ public class AdapterProducts extends RecyclerView.Adapter<AdapterProducts.MyView
         ImageView pImageView;
         TextView pProductName;
         TextView pProductPrice;
-
+        TextView sName;
         public MyViewHolder(View itemView) {
             super(itemView);
             pImageView = (ImageView) itemView.findViewById(R.id.pImage);
             pProductName = (TextView) itemView.findViewById(R.id.pName);
             pProductPrice = (TextView) itemView.findViewById(R.id.price);
-
+            sName = (TextView) itemView.findViewById(R.id.sName);
         }
     }
 }
